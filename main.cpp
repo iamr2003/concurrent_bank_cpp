@@ -14,17 +14,17 @@ Bank b;
 std::mutex b_mutex;
 
 void withdraw(int val) {
-  // const std::lock_guard<std::mutex> lock(b_mutex);
+  const std::lock_guard<std::mutex> lock(b_mutex);
   b.val -= val;
 }
 
 void deposit(int val) {
-  // const std::lock_guard<std::mutex> lock(b_mutex);
+  const std::lock_guard<std::mutex> lock(b_mutex);
   b.val += val;
 }
 // Start with one account and value, and multiple accessors
 int main() {
-  int num_transactions = 1000;
+  int num_transactions = 10000;
   std::vector<std::thread> threads;
   // use constant transaction
   // I don't think this is a good test, needs to mix them more
