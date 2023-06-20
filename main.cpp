@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <mutex>
@@ -63,6 +64,8 @@ int main() {
     tasks.push_back(task);
     }
   }
+
+  std::shuffle(tasks.begin(), tasks.end(), g);
 
   // allocate threads by defined order
   std::vector<std::thread> threads;
