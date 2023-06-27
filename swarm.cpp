@@ -66,7 +66,11 @@ struct Vec {
 struct Agent {
   Vec loc;
   Vec vel;
+  Agent():loc(2),vel(2){};
+  Agent(int n_dim):loc(n_dim),vel(n_dim){};
 };
+
+Vec local_controller(const std::vector<Agent> & neighbors,const Agent & self);
 
 int main(int argc, char *argv[]) {
   // figure out how to do full single threaded sim
@@ -110,7 +114,44 @@ int main(int argc, char *argv[]) {
           }
         }
       }
+      //parse the neighbors to determine next step
+      Vec next_vel = local_controller(neighbors,agents[i]);
+
     }
   }
 
+}
+
+Vec local_controller(const std::vector<Agent> & neighbors,const Agent & self){
+ // not figuring out how to build out the OOP for feature policy stuff rn 
+ // const std::vector<double> weights = {1,1,1};
+ //
+ // currently implementing a classic boids model
+  const double coh_weight = 1;
+  const double ali_weight = 1;
+  const double sep_weight = 1;
+
+  Vec coh(2);
+  Vec ali(2);
+  Vec sep(2);
+
+  Vec pos_centroid(2);
+  for(const Agent & agent:neighbors){
+    // find centroid in relative coordinates
+    pos_centroid=pos_centroid + (agent.loc-self.loc);
+    ali = ali + agent.vel;
+  }
+  ali *= (1.0/neighbors.size());
+
+  coh = (pos_centroid -self.loc);
+
+  sep = (self.loc - pos_centroid);
+  sep *= 1.0/std::pow(sep.mag(),2); //using inverse square for now 
+
+
+  coh*=coh_weight;
+  ali*=ali_weight;
+  sep*=sep_weight;
+
+  return (coh+ali+sep);
 }
