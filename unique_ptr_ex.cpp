@@ -27,7 +27,6 @@ private:
 public:
   linked_list() : head(nullptr){};
 
-  // TODO copy constructor
   linked_list(linked_list<T> &other) {
     auto theirs = other.head.get();
     head = std::make_unique<Node>(other.head->val);
@@ -77,6 +76,10 @@ public:
   }
 
   void print() {
+    if(!head){
+      std::cout<<std::endl;
+      return;
+    }
     auto curr = head.get();
     while (curr->next) {
       std::cout << curr->val << " ";
@@ -120,5 +123,7 @@ int main(int argc, char *argv[]) {
     std::cout << lst.pop_back() << " ";
   }
   std::cout << std::endl;
+  lst.print();
+  cpy.print();
   return 0;
 }
