@@ -28,9 +28,19 @@ public:
   linked_list() : head(nullptr){};
 
   // TODO copy constructor
-  //  linked_list(linked_list<T> & other){
-  //
-  //  }
+  linked_list(linked_list<T> &other) {
+    auto theirs = other.head.get();
+    head = std::make_unique<Node>(other.head->val);
+    auto ours = head.get();
+    if (!theirs) {
+      return;
+    }
+    while (theirs->next) {
+      ours->next = std::make_unique<Node>(theirs->next->val);
+      ours = ours->next.get();
+      theirs = theirs->next.get();
+    }
+  }
 
   void push_back(T val) {
     // bc we will be breaking the managed ptr behavior, have to grab the regular
@@ -79,6 +89,7 @@ public:
 
 std::unique_ptr<DummyType> mover(std::unique_ptr<DummyType> ptr_in) {
   auto here = std::make_unique<DummyType>(*ptr_in);
+  // implicit move on return, no copies occur
   return here;
 }
 
@@ -103,7 +114,8 @@ int main(int argc, char *argv[]) {
     lst.push_back(elem);
   }
   lst.print();
-
+  linked_list<int> cpy(lst);
+  cpy.print();
   for (auto elem : truth) {
     std::cout << lst.pop_back() << " ";
   }
