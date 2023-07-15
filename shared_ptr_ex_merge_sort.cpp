@@ -5,6 +5,8 @@
 #include <thread>
 #include <vector>
 
+//made a multithreaded merge sort that has a use of shared_ptrs within
+
 //for number of entries, and number of threads
 const int n = 10000000;
 const int n_threads = 8;
