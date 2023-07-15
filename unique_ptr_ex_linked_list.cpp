@@ -11,6 +11,7 @@ struct DummyType {
 };
 
 // let's remake a data structure that would be heap allocated using unique
+// note this is not something you should actually write
 // smart_ptrs Linked List
 template <class T> class linked_list {
   // singly linked for now

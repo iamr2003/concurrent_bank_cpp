@@ -146,6 +146,7 @@ Vec local_controller(const std::vector<Agent> & neighbors,const Agent & self){
   coh = (pos_centroid -self.loc);
 
   sep = (self.loc - pos_centroid);
+  //zero check?
   sep *= 1.0/std::pow(sep.mag(),2); //using inverse square for now 
 
 
